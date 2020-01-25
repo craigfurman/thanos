@@ -66,7 +66,7 @@ func ForeachStore(t *testing.T, testFn func(t *testing.T, bkt objstore.Bucket)) 
 	// Optional GCS.
 	if !IsObjStoreSkipped(t, client.GCS) {
 		t.Run("gcs", func(t *testing.T) {
-			bkt, closeFn, err := gcs.NewTestBucket(t, os.Getenv("GCP_PROJECT"))
+			bkt, closeFn, err := gcs.NewTestBucket(t, os.Getenv("GCP_PROJECT"), os.Getenv("GCP_TEST_BUCKET_LOCATION"))
 			testutil.Ok(t, err)
 
 			t.Parallel()

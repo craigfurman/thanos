@@ -173,7 +173,7 @@ func (b *Bucket) Close() error {
 
 // NewTestBucket creates test bkt client that before returning creates temporary bucket.
 // In a close function it empties and deletes the bucket.
-func NewTestBucket(t testing.TB, project string) (objstore.Bucket, func(), error) {
+func NewTestBucket(t testing.TB, project, location string) (objstore.Bucket, func(), error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	gTestConfig := Config{
@@ -190,7 +190,8 @@ func NewTestBucket(t testing.TB, project string) (objstore.Bucket, func(), error
 		return nil, nil, err
 	}
 
-	if err = b.bkt.Create(ctx, project, nil); err != nil {
+	bktAttrs := &storage.BucketAttrs{Location: location}
+	if err = b.bkt.Create(ctx, project, bktAttrs); err != nil {
 		_ = b.Close()
 		return nil, nil, err
 	}
